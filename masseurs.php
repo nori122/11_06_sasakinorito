@@ -25,23 +25,11 @@ if ($status == false) {
 } else {
     // 正常にSQLが実行された場合は入力ページファイルに移動し，入力ページの処理を実行する
     // fetchAll()関数でSQLで取得したレコードを配列で取得できる
-    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);  // データの出力用変数（初期値は空文字）を設定
+    $masseurs = $stmt->fetchAll(PDO::FETCH_ASSOC);  // データの出力用変数（初期値は空文字）を設定
     $output = "";
-    // var_dump($result);
+    // var_dump($masseurs);
     // exit();
-    // <tr><td>deadline</td><td>todo</td><tr>の形になるようにforeachで順番に$outputへデータを追加
-    // `.=`は後ろに文字列を追加する，の意味
-    foreach ($result as $record) {
-        $output .= "<tr>";
-        $output .= "<td>{$record["masseur_name"]}</td>";
-        $output .= "<td>{$record["masseur_rate"]}</td>";
-        $output .= "<td>{$record["masseur_comment"]}</td>";
-        $output .= "<td>{$record["masseur_salon"]}</td>";
-        $output .= "</tr>";
-    }
-    // $valueの参照を解除する．解除しないと，再度foreachした場合に最初からループしない
-    // 今回は以降foreachしないので影響なし
-    unset($value);
+    $php_json_masseurs = json_encode($masseurs);
 }
 
 ?>
@@ -57,27 +45,44 @@ if ($status == false) {
 <head>
     <meta charset='UTF-8'>
     <link rel='stylesheet' href='styles.css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <title>masseur list</title>
 </head>
 
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>名前</th>
-                <th>評価</th>
-                <th>コメント</th>
-                <th>サロン</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- ここに<tr><td>deadline</td><td>todo</td><tr>の形でデータが入る -->
-            <?= $output ?>
-        </tbody>
-    </table>
+    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
 
+    <h2>マッサージ師一覧</h2>
+    <div id="masseurs"></div>
+    <a href='top.php'>topへ戻る</a>
+
+
+
+    <!---------------------
+         javascript 要素
+    --------------------->
+    <script>
+        //phpからマッサージ師リストの配列を取得しjs_masseursに代入する
+        let js_masseurs = <?php echo $php_json_masseurs; ?>;
+        console.log(js_masseurs);
+
+        //js_masseursからHTMLタグを含むmasseursListを作成する
+        let masseursList = [];
+        for (var i = 0; i < js_masseurs.length; i++) {
+            masseursList.push('<div class="card">');
+            masseursList.push('<img src="img/seitaishi_man.png" alt="整体師" class="masseurImg">');
+            masseursList.push('<div class="cardText">');
+            masseursList.push('<p style="font-weight: bold;">' + js_masseurs[i]['masseur_name'] + '</p>');
+            masseursList.push('<div>レビュー：' + js_masseurs[i]['masseur_rate'] + '</div>');
+            masseursList.push('<div>勤務サロン：' + js_masseurs[i]['masseur_salon'] + '</div>');
+            masseursList.push('<div>コメント：' + js_masseurs[i]['masseur_comment'] + '</div>');
+            masseursList.push('</div>');
+            masseursList.push('</div>');
+        }
+        document.getElementById('masseurs').innerHTML = masseursList.join(''); //innerHTMLへ入れる時にjoin()で文字列にする
+    </script>
 
 </body>
 

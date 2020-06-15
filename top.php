@@ -11,8 +11,6 @@ check_session_id();
 // var_dump($_SESSION);
 // exit();
 
-// ユーザ名取得
-$customer_id = $_SESSION['customer_id'];
 
 // DB接続
 $pdo = connect_to_db();
@@ -38,13 +36,15 @@ $output = "ここにSQLのlikeで取得したお気にりいのマッサージ�
 <head>
     <meta charset='UTF-8'>
     <link rel='stylesheet' href='styles.css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <title>top</title>
 </head>
 
 <body>
-    <p><?= $customer_id ?>さんマイページ</p>
+    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
+
     <button><a href='search.php'>メニューから探す</a></button>
     <button><a href='masseurs.php'>マッサージ師一覧</a></button>
 

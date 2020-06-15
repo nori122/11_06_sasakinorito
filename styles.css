@@ -1,0 +1,14 @@
+.card{
+    border:solid 1px;
+    margin: 30px;
+    display: flex;
+    align-items: center;
+}
+.cardText{
+    margin:15px;
+}
+
+.masseurImg{
+    width: 100px;
+    height: 120px;
+}
