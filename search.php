@@ -46,9 +46,9 @@ check_session_id();
         <!-- 価格レンジを選択 -->
         <fieldset>
             <legend>Price</legend>
-            <input type='tel' name='price[]' id='price_min'>
+            <input type='number' name='min_price' id='min_price'>
             <span>円~ </span>
-            <input type='tel' name='price[]' id='price_max'>
+            <input type='number' name='max_price' id='max_price'>
             <span>円</span>
         </fieldset>
 

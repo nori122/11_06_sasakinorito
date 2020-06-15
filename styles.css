@@ -12,3 +12,8 @@
     width: 100px;
     height: 120px;
 }
+
+.searchResult{
+    border: solid 1px;
+    margin: 30px;
+}
