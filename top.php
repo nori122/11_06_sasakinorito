@@ -46,6 +46,7 @@ $output = "ここにSQLのlikeで取得したお気にりいのマッサージ�
 <body>
     <p><?= $customer_id ?>さんマイページ</p>
     <button><a href='search.php'>メニューから探す</a></button>
+    <button><a href='masseurs.php'>マッサージ師一覧</a></button>
 
 
     <p>お気に入りリスト</p>
