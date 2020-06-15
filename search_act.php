@@ -19,11 +19,8 @@ $pdo = connect_to_db();
 
 
 
-// データ取得SQL作成
-// $sql = 'SELECT * FROM services_table WHERE item=:filtered_menu';
-$sql = 'SELECT * FROM services_table WHERE item=:filtered_menu AND :min_price<price AND price<:max_price';
-
-
+//DBの結合（services_tableとmasseurs_table)と、検索
+$sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item=:filtered_menu AND :min_price<price AND price<:max_price';
 
 // SQL準備
 $stmt = $pdo->prepare($sql);
@@ -32,7 +29,6 @@ $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':filtered_menu', $filtered_menu, PDO::PARAM_STR);
 $stmt->bindParam(':min_price', $min_price, PDO::PARAM_INT);
 $stmt->bindParam(':max_price', $max_price, PDO::PARAM_INT);
-
 
 //実行
 $status = $stmt->execute();
@@ -55,6 +51,8 @@ if ($status == false) {
         $output .= "<td>{$record["item"]}</td>";
         $output .= "<td>{$record["duration"]}</td>";
         $output .= "<td>{$record["price"]}</td>";
+        $output .= "<td>{$record["in_charge"]}</td>";
+        $output .= "<td>{$record["masseur_name"]}</td>";
         // $output .= "<td><a href='like_create.php?user_id={$user_id}&todo_id={$record["id"]}'>like{$record["cnt"]}</a></td>";
         $output .= "</tr>";
     }
@@ -77,23 +75,32 @@ if ($status == false) {
 <head>
     <meta charset='UTF-8'>
     <link rel='stylesheet' href='styles.css'>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
 
     <title>search act</title>
 </head>
 
 <body>
+    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
 
-    <div class="card">
-        検索条件
-    </div>
-    <div class='searchResult'>
+    <!-- 検索条件を表示 -->
+    <fieldset class="search_param">
+        <legend>検索条件</legend>
+        <p>選択メニュー：<?= $filtered_menu ?>マッサージ</p>
+        <p>料金：<?= $min_price ?>〜<?= $max_price ?></p>
+    </fieldset>
+
+
+    <div class='result'>
         <table>
             <thead>
                 <tr>
                     <th>メニュー</th>
                     <th>時間</th>
                     <th>価格</th>
+                    <th>担当者</th>
                 </tr>
             </thead>
             <tbody>

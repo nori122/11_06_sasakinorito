@@ -45,12 +45,12 @@ $output = "ここにSQLのlikeで取得したお気にりいのマッサージ�
 <body>
     <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
 
-    <button><a href='search.php'>メニューから探す</a></button>
-    <button><a href='masseurs.php'>マッサージ師一覧</a></button>
+    <p><button><a href='masseurs.php'>マッサージ師一覧</a></button></p>
+    <p><button><a href='search.php'>メニューから探す</a></button></p>
 
 
-    <p>お気に入りリスト</p>
-    <div style="border:solid 1px"><?= $output ?></div>
+    <!-- <p>お気に入りリスト</p>
+    <div style="border:solid 1px"><?= $output ?></div> -->
 
 
 </body>
