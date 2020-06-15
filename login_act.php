@@ -9,6 +9,7 @@ include("functions.php");
 // DB接続します
 $pdo = connect_to_db();
 
+//POSTで受け取ったcustomer_idとcustomer_passwordを変数に代入
 $customer_id = $_POST["customer_id"];
 $customer_password = $_POST["customer_password"];
 
@@ -41,8 +42,8 @@ if (!$val) {
   $_SESSION = array();
   $_SESSION["session_id"] = session_id();
   $_SESSION["customer_id"] = $val["customer_id"];
+  $_SESSION["is_deleted"] = $val["is_deleted"];
   $_SESSION["id"] = $val["id"];
   header("Location:top.php");
-  echo ('yeah!');
   exit();
 }
