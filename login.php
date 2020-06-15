@@ -37,15 +37,15 @@
         <fieldset>
             <legend>ログイン画面</legend>
             <div>
-                customer_id: <input type="text" name="customer_id">
+                customer_id: <input type="text" name="customer_id" autocomplete="off">
             </div>
             <div>
-                password: <input type="text" name="customer_password">
+                password: <input type="password" name="customer_password" autocomplete="off">
             </div>
             <div>
                 <button>Login</button>
             </div>
-            <a href="register.php">or register</a>
+            <a href="register/register.php">or register</a>
         </fieldset>
     </form>
 

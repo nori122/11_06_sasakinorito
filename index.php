@@ -34,7 +34,7 @@
     <h3>マッサージ師予約サービス</h3>
 
     <button><a href='login.php'>ログイン</a></button>
-    <button><a href='register.php'>ログイン</a>新規登録</button>
+    <button><a href='register.php'>新規登録</a></button>
 
 </body>
 
