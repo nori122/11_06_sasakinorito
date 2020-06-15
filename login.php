@@ -45,7 +45,7 @@
             <div>
                 <button>Login</button>
             </div>
-            <a href="register/register.php">or register</a>
+            <a href="register.php">or register</a>
         </fieldset>
     </form>
 

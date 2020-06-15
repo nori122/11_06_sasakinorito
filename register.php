@@ -8,14 +8,17 @@
 </head>
 
 <body>
-  <form action="register/register_act.php" method="POST">
+  <form action="register_act.php" method="POST">
     <fieldset>
       <legend>todoリストユーザ登録画面</legend>
       <div>
-        user_id: <input type="text" name="user_id" autocomplete="off">
+        customer_name: <input type="text" name="customer_name" autocomplete="off">
       </div>
       <div>
-        password: <input type="password" name="password" autocomplete="off">
+        customer_id: <input type="text" name="customer_id" autocomplete="off">
+      </div>
+      <div>
+        password: <input type="password" name="customer_password" autocomplete="off">
       </div>
       <div>
         <button>Register</button>

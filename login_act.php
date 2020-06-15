@@ -42,7 +42,7 @@ if (!$val) {
   $_SESSION["session_id"] = session_id();
   $_SESSION["customer_id"] = $val["customer_id"];
   $_SESSION["id"] = $val["id"];
-  // header("Location:todo_read.php");
+  header("Location:top.php");
   echo ('yeah!');
   exit();
 }
