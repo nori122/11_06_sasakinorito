@@ -31,7 +31,7 @@ check_session_id();
 </head>
 
 <body>
-    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
+    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_name'] ?>さん </div>
 
     <!-- マッサージメニューを選択 -->
     <form action="search_act.php" method="POST">

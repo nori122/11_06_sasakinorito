@@ -41,6 +41,7 @@ if (!$val) {
 } else {
   $_SESSION = array();
   $_SESSION["session_id"] = session_id();
+  $_SESSION["customer_name"] = $val["customer_name"];
   $_SESSION["customer_id"] = $val["customer_id"];
   $_SESSION["is_deleted"] = $val["is_deleted"];
   $_SESSION["id"] = $val["id"];

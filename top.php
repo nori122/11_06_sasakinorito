@@ -43,7 +43,7 @@ $output = "ここにSQLのlikeで取得したお気にりいのマッサージ�
 </head>
 
 <body>
-    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_id'] ?>さん </div>
+    <div><a href='top.php'><i class="fas fa-home"></i></a><?= $_SESSION['customer_name'] ?>さん </div>
 
     <p><button><a href='masseurs.php'>マッサージ師一覧</a></button></p>
     <p><button><a href='search.php'>メニューから探す</a></button></p>
