@@ -1,5 +1,5 @@
 <!---------------------
-     php 要素
+php 要素
 --------------------->
 <?PHP
 session_start();
@@ -16,7 +16,7 @@ check_session_id();
 
 
 <!---------------------
-     HTML 要素
+HTML 要素
 --------------------->
 <!DOCTYPE html>
 <html lang='ja'>
@@ -37,10 +37,10 @@ check_session_id();
     <form action="search_act.php" method="POST">
         <fieldset>
             <legend>メニュー</legend>
-            <p><label><input type="checkbox" name="menu[]" value="フット">フットマッサージ</label></p>
-            <p><label><input type="checkbox" name="menu[]" value="ボディ">ボディマッサージ</label></p>
-            <p><label><input type="checkbox" name="menu[]" value="ヘッド">ヘッドマッサージ</label></p>
-            <p><label><input type="checkbox" name="menu[]" value="オイル">オイルマッサージ</label></p>
+            <p><label><input type="checkbox" name="menu[]" value='フット'>フットマッサージ</label></p>
+            <p><label><input type="checkbox" name="menu[]" value='ボディ'>ボディマッサージ</label></p>
+            <p><label><input type="checkbox" name="menu[]" value='ヘッド'>ヘッドマッサージ</label></p>
+            <p><label><input type="checkbox" name="menu[]" value='オイル'>オイルマッサージ</label></p>
         </fieldset>
 
         <!-- 価格レンジを選択 -->
