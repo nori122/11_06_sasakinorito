@@ -10,7 +10,10 @@ check_session_id();
 // exit();
 
 //チェックボックスで選択したメニューをfiltered_menuに代入
-$filtered_menu = implode(",", $_POST["menu"]);
+$filtered_menu = '("' . implode('","', $_POST['menu']) . '")';
+
+// echo ($filtered_menu);
+// exit();
 $min_price = $_POST["min_price"];
 $max_price = $_POST["max_price"];
 
@@ -20,8 +23,11 @@ $pdo = connect_to_db();
 
 
 //DBの結合（services_tableとmasseurs_table)と、検索
-$sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item=:filtered_menu AND :min_price<price AND price<:max_price';
+// $sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item = :filtered_menu AND :min_price<price AND price<:max_price';
+$sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item IN' . $filtered_menu . '  AND :min_price<price AND price<:max_price';
 //どれかに一致したときにwhereするsql文
+//→🎉できた🎉 INを使うのはすぐわかったが、implodeの前後にかっこをつけるのでてこずった。bindすると文字コードが意図せぬ挙動をする。
+
 //人ごとに別の配列を作って、phpでそこに入れ直して、扱う
 
 
@@ -29,7 +35,7 @@ $sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_ch
 $stmt = $pdo->prepare($sql);
 
 //bind
-$stmt->bindValue(':filtered_menu', $filtered_menu, PDO::PARAM_STR);
+// $stmt->bindValue(':filtered_menu', $filtered_menu, PDO::PARAM_STR);
 $stmt->bindParam(':min_price', $min_price, PDO::PARAM_INT);
 $stmt->bindParam(':max_price', $max_price, PDO::PARAM_INT);
 
@@ -127,7 +133,7 @@ HTML 要素
     <!-- 検索条件を表示 -->
     <fieldset class="search_param">
         <legend>検索条件</legend>
-        <p>選択メニュー：<?= $filtered_menu ?>マッサージ</p>
+        <p>選択メニュー：<?= $filtered_menu ?></p>
         <p>料金：<?= $min_price ?>〜<?= $max_price ?></p>
     </fieldset>
 
