@@ -1,5 +1,5 @@
 <!---------------------
-     php 要素
+php 要素
 --------------------->
 <?PHP
 session_start();
@@ -37,7 +37,7 @@ if ($status == false) {
 
 
 <!---------------------
-     HTML 要素
+HTML 要素
 --------------------->
 <!DOCTYPE html>
 <html lang='ja'>
@@ -61,7 +61,7 @@ if ($status == false) {
 
 
     <!---------------------
-         javascript 要素
+    javascript 要素
     --------------------->
     <script>
         //phpからマッサージ師リストの配列を取得しjs_masseursに代入する

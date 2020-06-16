@@ -1,5 +1,5 @@
 <!---------------------
-     php 要素
+php 要素
 --------------------->
 <?PHP
 session_start();
@@ -21,6 +21,9 @@ $pdo = connect_to_db();
 
 //DBの結合（services_tableとmasseurs_table)と、検索
 $sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item=:filtered_menu AND :min_price<price AND price<:max_price';
+//どれかに一致したときにwhereするsql文
+//人ごとに別の配列を作って、phpでそこに入れ直して、扱う
+
 
 // SQL準備
 $stmt = $pdo->prepare($sql);
@@ -103,7 +106,7 @@ if ($status == false) {
 
 
 <!---------------------
-     HTML 要素
+HTML 要素
 --------------------->
 <!DOCTYPE html>
 <html lang='ja'>
@@ -146,7 +149,7 @@ if ($status == false) {
     </div>
 
     <!---------------------
-         javascript 要素
+    javascript 要素
     --------------------->
     <script>
         //phpからマッサージ師リストの配列を取得しjs_resultに代入する
