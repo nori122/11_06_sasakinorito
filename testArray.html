@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="utf-8">
+    <title>Introduction to JavaScript</title>
+</head>
+
+<body>
+    <h1>JavaScript 入門</h1>
+    <p>ボタンをクリックして下さい。</p>
+    <button onclick="arrayFunction031()">クリック</button>
+    <script>
+        function arrayFunction031() {
+            //連想配列オブジェクトの作成
+            var user = {};
+            user.firstName = "山田";
+            user.lastName = "花子";
+            user.e_mail = "hanako.yamada@xxx.yyy.zzz";
+            console.log(user);
+
+            //連想配列オブジェクトの値を全て表示する
+            for (var key in user) {
+                document.write(key + "の値：" + user[key] + "<br>");
+            }
+        }
+    </script>
+</body>
+
+</html>

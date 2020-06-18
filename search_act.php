@@ -52,59 +52,39 @@ if ($status == false) {
     // 正常にSQLが実行された場合は入力ページファイルに移動し，入力ページの処理を実行する
     // fetchAll()関数でSQLで取得したレコードを配列で取得できる
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);  // データの出力用変数（初期値は空文字）を設定
+    $bymasseurs = [];
+    foreach ($result as $item) {
+        $key = $item['masseur_name'];
+        if (array_key_exists($key, $bymasseurs)) {
+            $bymasseurs[$key][] = $item;
+        } else {
+            $bymasseurs[$key] = [$item];
+        }
+    }
+    // echo ('<pre>');
+    // var_dump($bymasseurs);
+    // echo ('</pre>');
 
     // 検索結果をjavascriptで扱うため、json形式にする
-    $php_json_result = json_encode($result);
-
-
-    // // resultのmasseur_name列を参照してユニークな値のみの配列を作る
-    // $foods = [
-    //     ['name' => 'Apple', 'category' => 'fruits'],
-    //     ['name' => 'Strawberry', 'category' => 'fruits'],
-    //     ['name' => 'Tomato', 'category' => 'vegetables'],
-    //     ['name' => 'Carot', 'category' => 'vegetables'],
-    //     ['name' => 'water', 'category' => 'drink'],
-    //     ['name' => 'beer', 'category' => 'drink'],
-    // ];
-
-    // function array_group_by(array $foods, $keyName)
-    // {
-    //     $groups = [];
-    //     foreach ($foods as $item) {
-    //         $key = $item[$keyName];
-    //         if (array_key_exists($key, $groups)) {
-    //             $groups[$key][] = $item;
-    //         } else {
-    //             $groups[$key] = [$item];
-    //         }
-    //     }
-    //     return $groups;
-    // }
-
-    // assert(array_group_by($foods, 'category') === $expected);
-
-
-    // var_dump($foods);
-    // // var_dump($result);
-    // exit();
-
-
-    $output = "";
-    // <tr><td>deadline</td><td>todo</td><tr>の形になるようにforeachで順番に$outputへデータを追加
-    // `.=`は後ろに文字列を追加する，の意味
-    foreach ($result as $record) {
-        $output .= "<tr>";
-        $output .= "<td>{$record["item"]}</td>";
-        $output .= "<td>{$record["duration"]} 分</td>";
-        $output .= "<td>{$record["price"]}</td>";
-        $output .= "<td>{$record["masseur_name"]}</td>";
-        // $output .= "<td><a href='like_create.php?user_id={$user_id}&todo_id={$record["id"]}'>like{$record["cnt"]}</a></td>";
-        $output .= "</tr>";
-    }
-    // $valueの参照を解除する．解除しないと，再度foreachした場合に最初からループしない
-    // 今回は以降foreachしないので影響なし
-    unset($value);
+    $php_bymasseurs = json_encode($bymasseurs);
 }
+
+// $output = "";
+// <tr><td>deadline</td><td>todo</td><tr>の形になるようにforeachで順番に$outputへデータを追加
+// `.=`は後ろに文字列を追加する，の意味
+// foreach ($result as $record) {
+//     $output .= "<tr>";
+//     $output .= "<td>{$record["item"]}</td>";
+//     $output .= "<td>{$record["duration"]} 分</td>";
+//     $output .= "<td>{$record["price"]}</td>";
+//     $output .= "<td>{$record["masseur_name"]}</td>";
+//     // $output .= "<td><a href='like_create.php?user_id={$user_id}&todo_id={$record["id"]}'>like{$record["cnt"]}</a></td>";
+//     $output .= "</tr>";
+// }
+// $valueの参照を解除する．解除しないと，再度foreachした場合に最初からループしない
+// 今回は以降foreachしないので影響なし
+//     unset($value);
+// }
 
 
 ?>
@@ -139,45 +119,32 @@ HTML 要素
 
 
     <div id="result" class='result'>
-        <table>
-            <thead>
-                <th>item</th>
-                <th>duration</th>
-                <th>price</th>
-                <th>inCharge</th>
-            </thead>
-            <tbody>
-                <?= $output ?>
-            </tbody>
-        </table>
-
-
     </div>
 
     <!---------------------
     javascript 要素
     --------------------->
     <script>
-        //phpからマッサージ師リストの配列を取得しjs_resultに代入する
-        let js_result = <?php echo $php_json_result; ?>;
-        console.log(js_result);
+        //phpからマッサージ師リストの配列を取得しjs_bymasseursに代入する
+        let js_bymasseurs = <?php echo $php_bymasseurs; ?>;
+        console.log(js_bymasseurs);
+        console.log(js_bymasseurs['ノリト'][0]['masseur_name']);
 
 
-
-        //js_resultからHTMLタグを含むresultCardsを作成する
-        // let resultCards = [];
-        // for (var i = 0; i < js_masseurs.length; i++) {
-        //     resultCards.push('<div class="card">');
-        //     resultCards.push('<img src="img/seitaishi_man.png" alt="整体師" class="masseurImg">');
-        //     resultCards.push('<div class="cardText">');
-        //     resultCards.push('<p style="font-weight: bold;">' + js_masseurs[i]['masseur_name'] + '</p>');
-        //     resultCards.push('<div>レビュー：' + js_masseurs[i]['masseur_rate'] + '</div>');
-        //     resultCards.push('<div>勤務サロン：' + js_masseurs[i]['masseur_salon'] + '</div>');
-        //     resultCards.push('<div>コメント：' + js_masseurs[i]['masseur_comment'] + '</div>');
-        //     resultCards.push('</div>');
-        //     resultCards.push('</div>');
+        // js_bymasseursからHTMLタグを含むresultCardsを作成する
+        let resultCards = [];
+        // for (var i = 0; i < 4; i++) {
+        resultCards.push('<div class="card">');
+        resultCards.push('<img src="img/seitaishi_man.png" alt="整体師" class="masseurImg">');
+        resultCards.push('<div class="cardText">');
+        resultCards.push('<p style="font-weight: bold;">' + js_bymasseurs['イクヤ']['masseur_name'] + '</p>');
+        // resultCards.push('<div>レビュー：' + js_bymasseurs['イクヤ']['masseur_rate'] + '</div>');
+        // resultCards.push('<div>勤務サロン：' + js_bymasseurs['イクヤ']['masseur_salon'] + '</div>');
+        // resultCards.push('<div>コメント：' + js_bymasseurs['イクヤ']['masseur_comment'] + '</div>');
+        resultCards.push('</div>');
+        resultCards.push('</div>');
         // }
-        // document.getElementById('result').innerHTML = resultCards.join(''); //innerHTMLへ入れる時にjoin()で文字列にする
+        document.getElementById('result').innerHTML = resultCards.join(''); //innerHTMLへ入れる時にjoin()で文字列にする
     </script>
 
 </body>
