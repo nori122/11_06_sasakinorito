@@ -26,7 +26,8 @@ $pdo = connect_to_db();
 // $sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item = :filtered_menu AND :min_price<price AND price<:max_price';
 $sql = 'SELECT * FROM `services_table` LEFT OUTER JOIN `masseurs_table` ON in_charge = masseur_id WHERE item IN' . $filtered_menu . '  AND :min_price<price AND price<:max_price';
 //どれかに一致したときにwhereするsql文
-//→🎉できた🎉 INを使うのはすぐわかったが、implodeの前後にかっこをつけるのでてこずった。bindすると文字コードが意図せぬ挙動をする。
+//→🎉できた🎉 WHERE INを使うのはすぐわかったが、implodeの前後にかっこをつけるのでてこずった。
+//bindすると文字コードが意図せぬ挙動をする。
 
 //人ごとに別の配列を作って、phpでそこに入れ直して、扱う
 
@@ -129,10 +130,12 @@ HTML 要素
     javascript 要素
     --------------------->
     <script>
-        //phpからマッサージ師リストの配列を取得しjs_bymasseursに代入する
+        //phpからマッサージ師リストの配列を取得しjs_resultに代入する
         let js_result = <?php echo $php_result; ?>;
-        console.log(js_result);
-        // console.log(js_result['ノリト'][0]['masseur_name']);
+        // console.log(js_result);
+
+        //by_masseurオブジェクトを作成し、js_resultからマッサージの名前ごとにグループ化したオブジェクトを作成する。
+        //オブジェクトの中にそれぞれ連想配列としてデータを格納する。
         var by_masseur = {};
         js_result.map((i) => {
             var name = i["masseur_name"];
@@ -141,16 +144,11 @@ HTML 要素
         });
         console.log(by_masseur);
 
-        var mapped_masseur = {};
+        //mapped_masseur配列を作成し、Object.entriesを使用してby_masseurオブジェクトを配列に変換する。
+        var mapped_masseur = [];
         mapped_masseur = Object.entries(by_masseur);
-        // console.log(mapped_masseur);
-        // console.log(mapped_masseur.length);
-        // console.log(mapped_masseur[0][0]); //ノリト
-        // console.log(mapped_masseur[0][1][0]['masseur_comment']); //
-        // console.log(mapped_masseur[0][1].length);
 
-
-        // js_bymasseursからHTMLタグを含むresultCardsを作成する
+        // mapped_masseurからHTMLタグを含むresultCardsを作成する
         let resultCards = [];
         for (var i = 0; i < mapped_masseur.length; i++) {
             resultCards.push('<div class="card">');
