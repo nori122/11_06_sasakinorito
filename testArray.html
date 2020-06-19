@@ -7,23 +7,49 @@
 </head>
 
 <body>
-    <h1>JavaScript 入門</h1>
-    <p>ボタンをクリックして下さい。</p>
-    <button onclick="arrayFunction031()">クリック</button>
     <script>
-        function arrayFunction031() {
-            //連想配列オブジェクトの作成
-            var user = {};
-            user.firstName = "山田";
-            user.lastName = "花子";
-            user.e_mail = "hanako.yamada@xxx.yyy.zzz";
-            console.log(user);
+        //foodsの連想配列を生成
+        var foods = [
+            { 'name': 'Apple', 'category': 'fruits' },
+            { 'name': 'Strawberry', 'category': 'fruits' },
+            { 'name': 'Tomato', 'category': 'vegetables' },
+            { 'name': 'Carot', 'category': 'vegetables' },
+            { 'name': 'water', 'category': 'drink' },
+            { 'name': 'beer', 'category': 'drink' },
+        ];
+        console.log(foods);
 
-            //連想配列オブジェクトの値を全て表示する
-            for (var key in user) {
-                document.write(key + "の値：" + user[key] + "<br>");
+        //foodsのcateogryごとにまとめた連想配列を先生
+        var expected = {};
+        foods.map((item) => {
+            var cat = item["category"];
+            // console.log(cat);
+            if (typeof expected[cat] == "undefined") {
+                expected[cat] = [];
             }
-        }
+            expected[cat].push(item);
+        });
+        console.log(expected);
+        console.log(expected['drink'])
+
+
+        var numbered = {};
+        numbered = Object.entries(expected);
+        console.log(numbered);
+
+        // const array = ['japanese', 'english', 'chinese']
+        // const upper = array.map(hogehoge => hogehoge.toUpperCase())
+
+        // console.log(upper) // [ 'JAPANESE', 'ENGLISH', 'CHINESE' ]
+
+        // const array = [1, 2, 3]
+        // const objects = array.map((key, index) => ({ index, key }))
+        // // const objects = array.map((key, index) => ({ key }))
+
+
+        // console.log(objects) // [ { key: 1 }, { key: 2 }, { key: 3 } ]
+
+
     </script>
 </body>
 

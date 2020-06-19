@@ -52,21 +52,22 @@ if ($status == false) {
     // 正常にSQLが実行された場合は入力ページファイルに移動し，入力ページの処理を実行する
     // fetchAll()関数でSQLで取得したレコードを配列で取得できる
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);  // データの出力用変数（初期値は空文字）を設定
-    $bymasseurs = [];
-    foreach ($result as $item) {
-        $key = $item['masseur_name'];
-        if (array_key_exists($key, $bymasseurs)) {
-            $bymasseurs[$key][] = $item;
-        } else {
-            $bymasseurs[$key] = [$item];
-        }
-    }
+    // $bymasseurs = [];
+    // foreach ($result as $item) {
+    //     $key = $item['masseur_name'];
+    //     if (array_key_exists($key, $bymasseurs)) {
+    //         $bymasseurs[$key][] = $item;
+    //     } else {
+    //         $bymasseurs[$key] = [$item];
+    //     }
+    // }
     // echo ('<pre>');
     // var_dump($bymasseurs);
     // echo ('</pre>');
 
     // 検索結果をjavascriptで扱うため、json形式にする
-    $php_bymasseurs = json_encode($bymasseurs);
+    // $php_bymasseurs = json_encode($bymasseurs);
+    $php_result = json_encode($result);
 }
 
 // $output = "";
@@ -121,29 +122,59 @@ HTML 要素
     <div id="result" class='result'>
     </div>
 
+
+
+
     <!---------------------
     javascript 要素
     --------------------->
     <script>
         //phpからマッサージ師リストの配列を取得しjs_bymasseursに代入する
-        let js_bymasseurs = <?php echo $php_bymasseurs; ?>;
-        console.log(js_bymasseurs);
-        console.log(js_bymasseurs['ノリト'][0]['masseur_name']);
+        let js_result = <?php echo $php_result; ?>;
+        console.log(js_result);
+        // console.log(js_result['ノリト'][0]['masseur_name']);
+        var by_masseur = {};
+        js_result.map((i) => {
+            var name = i["masseur_name"];
+            if (typeof by_masseur[name] == "undefined") by_masseur[name] = [];
+            by_masseur[name].push(i);
+        });
+        console.log(by_masseur);
+
+        var mapped_masseur = {};
+        mapped_masseur = Object.entries(by_masseur);
+        // console.log(mapped_masseur);
+        // console.log(mapped_masseur.length);
+        // console.log(mapped_masseur[0][0]); //ノリト
+        // console.log(mapped_masseur[0][1][0]['masseur_comment']); //
+        // console.log(mapped_masseur[0][1].length);
 
 
         // js_bymasseursからHTMLタグを含むresultCardsを作成する
         let resultCards = [];
-        // for (var i = 0; i < 4; i++) {
-        resultCards.push('<div class="card">');
-        resultCards.push('<img src="img/seitaishi_man.png" alt="整体師" class="masseurImg">');
-        resultCards.push('<div class="cardText">');
-        resultCards.push('<p style="font-weight: bold;">' + js_bymasseurs['イクヤ']['masseur_name'] + '</p>');
-        // resultCards.push('<div>レビュー：' + js_bymasseurs['イクヤ']['masseur_rate'] + '</div>');
-        // resultCards.push('<div>勤務サロン：' + js_bymasseurs['イクヤ']['masseur_salon'] + '</div>');
-        // resultCards.push('<div>コメント：' + js_bymasseurs['イクヤ']['masseur_comment'] + '</div>');
-        resultCards.push('</div>');
-        resultCards.push('</div>');
-        // }
+        for (var i = 0; i < mapped_masseur.length; i++) {
+            resultCards.push('<div class="card">');
+            resultCards.push('<img src="img/seitaishi_man.png" alt="整体師" class="masseurImg">');
+            resultCards.push('<div class="cardText">');
+            resultCards.push('<div>マッサージ師：' + (mapped_masseur[i][1][0]['masseur_name']) + '</div>');
+            resultCards.push('<div>レビュー評価：' + (mapped_masseur[i][1][0]['masseur_rate']) + '</div>');
+            resultCards.push('<div>勤務サロン：' + mapped_masseur[i][1][0]['masseur_salon'] + '</div>');
+            resultCards.push('<div>コメント：' + mapped_masseur[i][1][0]['masseur_comment'] + '</div><br>');
+            resultCards.push('<table><thead>');
+            resultCards.push('<th>メニュー</th> <th> 時間 </th> <th> 価格 </th></thead>');
+            resultCards.push('<tbody style="color:red;">');
+            for (var j = 0; j < mapped_masseur[i][1].length; j++) {
+                resultCards.push('<tr>');
+                resultCards.push('<td>' + (mapped_masseur[i][1][j]['item']) + 'マッサージ</td>');
+                resultCards.push('<td>' + (mapped_masseur[i][1][j]['duration']) + '分</td>');
+                resultCards.push('<td>' + (mapped_masseur[i][1][j]['price']) + '円</td>');
+                resultCards.push('</tr>');
+            }
+            resultCards.push('</tbody>');
+            resultCards.push('</table>');
+            resultCards.push('</div>');
+            resultCards.push('</div>');
+        }
         document.getElementById('result').innerHTML = resultCards.join(''); //innerHTMLへ入れる時にjoin()で文字列にする
     </script>
 
